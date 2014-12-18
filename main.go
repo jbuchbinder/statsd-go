@@ -35,7 +35,7 @@ var (
 	gangliaGroup     = flag.String("ganglia-group", "statsd", "Ganglia metric group name")
 	flushInterval    = flag.Int64("flush-interval", 10, "Flush interval")
 	percentThreshold = flag.Int("percent-threshold", 90, "Threshold percent")
-	statsPrefix      = flag.String("stats-prefix", "stats.", "Counters Prefix")
+	statsPrefix      = flag.String("stats-prefix", "stats.", "Stats Prefix")
 	countersPrefix   = flag.String("counters-prefix", "stats.counters.", "Counters Prefix")
 	gaugesPrefix     = flag.String("gauges-prefix", "stats.gauges.", "Gauges Prefix")
 	timersPrefix     = flag.String("timers-prefix", "stats.timers.", "Timers Prefix")
