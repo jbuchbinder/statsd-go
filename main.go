@@ -114,7 +114,7 @@ func submit() {
 	gmSubmit := func(name string, value uint32) {
 		if useGanglia {
 			if *debug {
-				log.Println("Ganglia send metric %s value %d\n", name, value)
+				log.Printf("Ganglia send metric %s value %d", name, value)
 			}
 			m_value := fmt.Sprint(value)
 			m_units := "count"
@@ -129,7 +129,7 @@ func submit() {
 	gmSubmitFloat := func(name string, value float64) {
 		if useGanglia {
 			if *debug {
-				log.Println("Ganglia send float metric %s value %f\n", name, value)
+				log.Printf("Ganglia send float metric %s value %f", name, value)
 			}
 			m_value := fmt.Sprint(value)
 			m_units := "count"
@@ -155,14 +155,14 @@ func submit() {
 				if err != nil {
 					panic(err.Error())
 				}
-				gm.AddServer(gmetric.GmetricServer{gIP.IP, *gangliaPort})
+				gm.AddServer(gmetric.Server{Server: gIP.IP, Port: *gangliaPort})
 			}
 		} else {
 			gIP, err := net.ResolveIPAddr("ip4", *gangliaAddress)
 			if err != nil {
 				panic(err.Error())
 			}
-			gm.AddServer(gmetric.GmetricServer{gIP.IP, *gangliaPort})
+			gm.AddServer(gmetric.Server{Server: gIP.IP, Port: *gangliaPort})
 		}
 		useGanglia = true
 	} else {
