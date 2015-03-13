@@ -173,7 +173,7 @@ func submit() {
 	buffer := bytes.NewBufferString("")
 	for s, c := range counters {
 		value := float64(c) / float64((float64(*flushInterval)*float64(time.Second))/float64(1e3))
-		fmt.Fprintf(buffer, "%s%s %d %d\n", *statsPrefix, s, value, now)
+		fmt.Fprintf(buffer, "%s%s %f %d\n", *statsPrefix, s, value, now)
 		gmSubmitFloat(fmt.Sprintf("stats_%s", s), value)
 		fmt.Fprintf(buffer, "%s%s %d %d\n", *countersPrefix, s, c, now)
 		gmSubmit(fmt.Sprintf("stats_counts_%s", s), uint32(c))
