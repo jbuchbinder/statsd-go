@@ -169,7 +169,7 @@ func submit() {
 		useGanglia = false
 	}
 	numStats := 0
-	now := int32(time.Now().Unix())
+	now := int32(time.Now().UTC().Unix())
 	buffer := bytes.NewBufferString("")
 	for s, c := range counters {
 		value := float64(c) / float64((float64(*flushInterval)*float64(time.Second))/float64(1e3))
