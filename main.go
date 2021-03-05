@@ -246,6 +246,15 @@ func submit() {
 	}
 }
 
+// Statsd spec https://github.com/b/statsd_spec and https://github.com/etsy/statsd/blob/master/docs/metric_types.md
+// The format of exported metrics is UTF-8 text, with metrics separated by newlines.
+//
+// Gauges -     <metric name>:<value>|g
+// Counters -   <metric name>:<value>|c[|@<sample rate>]
+// Timers -     <metric name>:<value>|ms
+// Histograms - <metric name>:<value>|h
+// Meters -     <metric name>:<value>|m
+
 func handleMessage(conn *net.UDPConn, remaddr net.Addr, buf *bytes.Buffer) {
 	var packet Packet
 	var value string
