@@ -242,7 +242,10 @@ func submit() {
 		if *debug {
 			log.Println(fmt.Sprintf("Send to graphite: [[[%s]]]\n", string(buffer.Bytes())))
 		}
-		clientGraphite.Write(buffer.Bytes())
+		_, err := clientGraphite.Write(buffer.Bytes())
+		if err != nil {
+			log.Printf(err.Error())
+		}
 	}
 }
 
@@ -255,12 +258,12 @@ func submit() {
 // Histograms - <metric name>:<value>|h
 // Meters -     <metric name>:<value>|m
 
-func handleMessage(conn *net.UDPConn, remaddr net.Addr, buf *bytes.Buffer) {
+func handleMessage(buf []byte) {
 	var packet Packet
 	var value string
 	var sanitizeRegexp = regexp.MustCompile("[^a-zA-Z0-9\\-_\\.:\\|@]")
 	var packetRegexp = regexp.MustCompile("([a-zA-Z0-9_\\.]+):(\\-?[0-9\\.]+)\\|(c|ms|g)(\\|@([0-9\\.]+))?")
-	s := sanitizeRegexp.ReplaceAllString(buf.String(), "")
+	s := sanitizeRegexp.ReplaceAllString(string(buf), "")
 	for _, item := range packetRegexp.FindAllStringSubmatch(s, -1) {
 		value = item[2]
 		if item[3] == "ms" {
@@ -293,21 +296,25 @@ func handleMessage(conn *net.UDPConn, remaddr net.Addr, buf *bytes.Buffer) {
 func udpListener() {
 	address, _ := net.ResolveUDPAddr(UDP, *serviceAddress)
 	listener, err := net.ListenUDP(UDP, address)
-	defer listener.Close()
 	if err != nil {
 		log.Fatalf("ListenAndServe: %s", err.Error())
 	}
+	defer listener.Close()
+	statCounter := 0
 	for {
 		message := make([]byte, 512)
-		n, remaddr, error := listener.ReadFrom(message)
+		n, _, error := listener.ReadFromUDP(message)
 		if error != nil {
 			continue
 		}
-		buf := bytes.NewBuffer(message[0:n])
+		// create a "slice" that refers to the valid portion of message
+		buf := message[0:n]
+		log.Printf("Stat %d: \"%s\"", statCounter, buf)
 		if *debug {
 			log.Println("Packet received: " + string(message[0:n]) + "\n")
 		}
-		go handleMessage(listener, remaddr, buf)
+		go handleMessage(buf)
+		statCounter++
 	}
 }
 
