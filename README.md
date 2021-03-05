@@ -1,17 +1,15 @@
-STATSD-GO
-=========
+# STATSD-GO
 
 [![Build Status](https://secure.travis-ci.org/jbuchbinder/statsd-go.png)](http://travis-ci.org/jbuchbinder/statsd-go)
-
-[![Gobuild Download](http://gobuild.io/badge/github.com/jbuchbinder/statsd-go/downloads.svg)](http://gobuild.io/github.com/jbuchbinder/statsd-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jbuchbinder/statsd-go)](https://goreportcard.com/report/github.com/jbuchbinder/statsd-go)
+[![GoDoc](https://godoc.org/github.com/jbuchbinder/statsd-go?status.png)](https://godoc.org/github.com/jbuchbinder/statsd-go)
 
 Port of Etsy's statsd, written in Go.
 
 This was forked from https://github.com/amir/gographite to provide
 Ganglia submission support.
 
-USAGE
------
+## USAGE
 
 ```
 Usage of statsd-go:
